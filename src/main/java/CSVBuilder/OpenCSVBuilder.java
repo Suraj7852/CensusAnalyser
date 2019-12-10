@@ -1,5 +1,6 @@
-package censusanalyser;
+package CSVBuilder;
 
+import censusanalyser.CensusAnalyserException;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
@@ -26,7 +27,7 @@ public class OpenCSVBuilder<E> implements ICSVBuilder{
             csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
             return csvToBeanBuilder.build();
         } catch (IllegalStateException e) {
-            throw new CSVBuilderException(e.getMessage(),CensusAnalyserException.ExceptionType.UNABLE_TO_PARSE);
+            throw new CSVBuilderException(e.getMessage(), CSVBuilderException.ExceptionType.UNABLE_TO_PARSE);
         }
     }
 }

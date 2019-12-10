@@ -1,14 +1,16 @@
-package censusanalyser;
+package CSVBuilder;
+
+import censusanalyser.CensusAnalyserException;
 
 public class CSVBuilderException extends Exception {
 
-    enum ExceptionType {
+    public enum ExceptionType {
         CENSUS_FILE_PROBLEM,UNABLE_TO_PARSE
     }
 
-    ExceptionType type;
+   public ExceptionType type;
 
-    public CSVBuilderException(String message, CensusAnalyserException.ExceptionType unableToParse) {
+    public CSVBuilderException(String message,ExceptionType type) {
         super(message);
         this.type = type;
     }

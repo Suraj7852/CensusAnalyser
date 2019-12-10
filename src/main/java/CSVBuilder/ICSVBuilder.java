@@ -1,4 +1,4 @@
-package censusanalyser;
+package CSVBuilder;
 
 import java.io.Reader;
 import java.util.Iterator;
