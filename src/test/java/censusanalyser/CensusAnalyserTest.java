@@ -55,4 +55,15 @@ public class CensusAnalyserTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void givenIndianCensusData_WhenFilePath_NotGIven_ThrowsException() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            String sortedCensusData = censusAnalyser.getStateWiseSortedCensusData();
+            IndiaCensusCSV[] censusCSV = new Gson().fromJson(sortedCensusData, IndiaCensusCSV[].class);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA,e.type);
+        }
+    }
 }
