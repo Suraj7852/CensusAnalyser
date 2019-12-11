@@ -91,4 +91,14 @@ public class CensusAnalyserTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.HEADER_MISMATCH,e.type);
         }
     }
+
+    @Test
+    public void givenIndianCensusCode_WhenFilePath_NotPassed_throwsException() {
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadIndiaCensusCode("");
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.UNABLE_TO_CAPTURE_CSV_HEADER,e.type);
+        }
+    }
 }
