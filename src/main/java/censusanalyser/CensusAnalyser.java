@@ -14,7 +14,14 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class CensusAnalyser {
-    Map<String,IndiaCensusDAO> censusStateMap = new HashMap<>();
+    Map<String,IndiaCensusDAO> censusStateMap = null;
+    Map<CSVField,Comparator<IndiaCensusDAO>> stateField = null;
+
+    public CensusAnalyser() {
+        this.censusStateMap = new HashMap<>();
+        this.stateField = new HashMap<>();
+        this.stateField.put(CSVField.STATE,Comparator.comparing(census -> census.state));
+    }
 
     public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))
@@ -63,13 +70,12 @@ public class CensusAnalyser {
         }
     }
 
-    public String getStateWiseSortedCensusData() throws CensusAnalyserException {
+    public String getStateWiseSortedCensusData(CSVField field) throws CensusAnalyserException {
         if(censusStateMap == null || censusStateMap.size()==0) {
             throw new CensusAnalyserException("No census data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
         }
-        Comparator<IndiaCensusDAO> censusComparator = Comparator.comparing(census -> census.state);
         List<IndiaCensusDAO> censusDAOS = censusStateMap.values().stream().collect(Collectors.toList());
-        this.sort(censusDAOS, censusComparator);
+        this.sort(censusDAOS, this.stateField.get(field));
         String sortedStateCensusJson = new Gson().toJson(censusDAOS);
         return sortedStateCensusJson;
     }
