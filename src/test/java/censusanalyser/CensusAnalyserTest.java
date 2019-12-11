@@ -5,8 +5,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.lang.reflect.Type;
-
 public class CensusAnalyserTest {
 
     private static final String INDIA_CENSUS_CSV_FILE_PATH = "./src/test/resources/IndiaStateCensusData.csv";
@@ -50,9 +48,10 @@ public class CensusAnalyserTest {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
             censusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+            censusAnalyser.loadIndiaCensusCode(INDIA_STATE_CSV_FILE_PATH);
             String sortedCensusData = censusAnalyser.getStateWiseSortedCensusData();
-            IndiaCensusDAO[] censusDAO = new Gson().fromJson(sortedCensusData, IndiaCensusDAO[].class);
-            Assert.assertEquals("Andhra Pradesh",censusDAO[0].state);
+            IndiaCensusDAO[] censusCSV = new Gson().fromJson(sortedCensusData, IndiaCensusDAO[].class);
+            Assert.assertEquals("Andhra Pradesh",censusCSV[0].state);
         } catch (CensusAnalyserException e) {
             e.printStackTrace();
         }
