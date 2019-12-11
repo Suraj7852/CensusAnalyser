@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -62,14 +61,8 @@ public class CensusAnalyser {
         }
     }
 
-    private <E> int getCount(Iterator<E> iterator)  {
-        Iterable<E> csvIterable = () -> iterator;
-        int namOfEateries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
-        return namOfEateries;
-    }
-
     public String getStateWiseSortedCensusData() throws CensusAnalyserException {
-        if(censusStateMap == null | censusStateMap.size()==0) {
+        if(censusStateMap == null || censusStateMap.size()==0) {
             throw new CensusAnalyserException("No census data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
         }
         Comparator<IndiaCensusDAO> censusComparator = Comparator.comparing(census -> census.state);
