@@ -45,21 +45,16 @@ public class CensusAnalyser {
     }
 
     public int loadIndiaCensusCode(String csvFilePath) throws CensusAnalyserException {
-        int count=0;
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))
         ){
             ICSVBuilder csvBuilder = CSVBuilderFactory.createCSVBuilder();
             Iterator<IndiaStateCodeCSV> stateCSVIterator = csvBuilder.
                                                                getCSVFileIterator(reader,IndiaStateCodeCSV.class);
-            while (stateCSVIterator.hasNext()) {
-                count++;
-                IndiaStateCodeCSV stateCSV = stateCSVIterator.next();
-                IndiaCensusDAO censusDAO = censusStateMap.get(stateCSV.state);
-                if (censusDAO == null ) continue;
-                censusDAO.stateCode = stateCSV.stateCode;
-            }
-
-            return count;
+            Iterable<IndiaStateCodeCSV> csvIterable = () -> stateCSVIterator;
+            StreamSupport.stream(csvIterable.spliterator(),false)
+                    .filter(csvState -> censusStateMap.get(csvState.state) != null)
+                    .forEach(csvState -> censusStateMap.get(csvState.state).stateCode = csvState.stateCode);
+            return censusStateMap.size();
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM);
