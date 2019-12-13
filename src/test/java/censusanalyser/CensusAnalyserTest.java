@@ -239,4 +239,15 @@ public class CensusAnalyserTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA,e.type);
         }
     }
+
+    @Test
+    public void givenIndianCensusData_mostPopulousStateWithDensity() {
+        try {
+            Map<String, CensusDAO> usCensusData = censusAnalyser.loadCensusData(CensusAnalyser.Country.US,US_CENSUS_CSV_FILE_PATH);
+            String state = censusAnalyser.mostPopulousState(usCensusData, CSVField.POPULATION);
+            Assert.assertEquals("California",state);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
 }
