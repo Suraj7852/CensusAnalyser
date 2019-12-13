@@ -20,7 +20,7 @@ public class IndiaCensusAdapterTest {
     }
 
     @Test
-    public void givenIndianCensusCSVFileReturnsCorrectRecors() {
+    public void givenIndianCensusCSVFile_ThrowsExceptionWhen_WrongFilePathIsSent() {
         try {
             IndiaCensusAdapter censusAnalyser = new IndiaCensusAdapter();
             censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA, WRONG_CSV_FILE_PATH);
