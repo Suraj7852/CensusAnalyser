@@ -219,4 +219,13 @@ public class CensusAnalyserTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void givenIndianCensusCSVFile_WhenInvalidCountry_ThrowsException() {
+        try {
+            censusAnalyser.loadCensusData(CensusAnalyser.Country.PAKISTAN,  INDIA_CENSUS_CSV_FILE_PATH,WRONG_CSV_FILE_PATH);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.INVALID_COUNTRY,e.type);
+        }
+    }
 }

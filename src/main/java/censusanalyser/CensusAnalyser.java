@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CensusAnalyser {
-    public enum Country {INDIA,US}
+    public enum Country {INDIA,US,PAKISTAN}
     Map<CSVField,Comparator<CensusDAO>> stateField = null;
 
     public CensusAnalyser() {

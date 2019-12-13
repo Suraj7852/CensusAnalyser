@@ -52,7 +52,7 @@ public class IndiaCensusAdapterTest {
     }
 
     @Test
-    public void givenIndianCensusCSVFile_WhenStat_ThrowsException() {
+    public void givenIndianCensusCSVFile_WhenWrongFile_ThrowsException() {
         try {
             IndiaCensusAdapter censusAnalyser = new IndiaCensusAdapter();
             censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,  INDIA_CENSUS_CSV_FILE_PATH,WRONG_CSV_FILE_PATH);
