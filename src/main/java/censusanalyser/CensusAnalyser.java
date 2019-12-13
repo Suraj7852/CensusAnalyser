@@ -5,8 +5,11 @@ import com.google.gson.Gson;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toCollection;
+
 public class CensusAnalyser {
     public enum Country {INDIA,US,PAKISTAN}
+    Country country;
     Map<CSVField,Comparator<CensusDAO>> stateField = null;
 
     public CensusAnalyser() {
@@ -19,29 +22,21 @@ public class CensusAnalyser {
 
     public Map<String, CensusDAO> loadCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
         CensusAdapter censusAdapter = CensusAnalyserFactory.loadCensusData(country);
+        this.country = country;
         return censusAdapter.loadCensusData(country,csvFilePath);
     }
 
-    public String getSortedCensusData(Map<String, CensusDAO> map, CSVField field) throws CensusAnalyserException {
-        if(map == null || map.size()==0) {
+    public String getSortedCensusData(Map<String, CensusDAO> daoMap, CSVField field) throws CensusAnalyserException {
+        if(daoMap == null || daoMap.size()==0) {
             throw new CensusAnalyserException("No census data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
         }
-        List<CensusDAO> censusDAOS = map.values().stream().collect(Collectors.toList());
-        this.sort(censusDAOS, this.stateField.get(field));
+
+        ArrayList censusDAOS = daoMap.values().stream()
+                .sorted(this.stateField.get(field))
+                .map(censusDAO -> censusDAO.getCensusDTO(country))
+                .collect(toCollection(ArrayList::new));
+
         String sortedStateCensusJson = new Gson().toJson(censusDAOS);
         return sortedStateCensusJson;
-    }
-
-    private void sort(List<CensusDAO> censusList, Comparator<CensusDAO> censusComparator) {
-        for (int i=0;i<censusList.size();i++) {
-            for (int j=0;j<censusList.size()-i-1;j++) {
-                CensusDAO census1 = censusList.get(j);
-                CensusDAO census2 = censusList.get(j+1);
-                if (censusComparator.compare(census1,census2) > 0) {
-                    censusList.set(j, census2);
-                    censusList.set(j+1, census1);
-                }
-            }
-        }
     }
 }
