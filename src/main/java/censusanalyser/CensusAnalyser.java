@@ -20,11 +20,11 @@ public class CensusAnalyser {
         return censusAdapter.loadCensusData(country,csvFilePath);
     }
 
-    public String getStateWiseSortedCensusData(CSVField field) throws CensusAnalyserException {
-        if(censusStateMap == null || censusStateMap.size()==0) {
+    public String getStateWiseSortedCensusData(Map<String, CensusDAO> map, CSVField field) throws CensusAnalyserException {
+        if(map == null || map.size()==0) {
             throw new CensusAnalyserException("No census data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
         }
-        List<CensusDAO> censusDAOS = censusStateMap.values().stream().collect(Collectors.toList());
+        List<CensusDAO> censusDAOS = map.values().stream().collect(Collectors.toList());
         this.sort(censusDAOS, this.stateField.get(field));
         String sortedStateCensusJson = new Gson().toJson(censusDAOS);
         return sortedStateCensusJson;
