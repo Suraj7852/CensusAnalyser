@@ -3,11 +3,11 @@ package censusanalyser;
 import com.google.gson.Gson;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toCollection;
 
 public class CensusAnalyser {
+
     public enum Country {INDIA,US,PAKISTAN}
     Country country;
     Map<CSVField,Comparator<CensusDAO>> stateField = null;
@@ -38,5 +38,29 @@ public class CensusAnalyser {
 
         String sortedStateCensusJson = new Gson().toJson(censusDAOS);
         return sortedStateCensusJson;
+    }
+
+    public String mostPopulousState(Map<String, CensusDAO> daoMap, CSVField field) throws CensusAnalyserException {
+        String sortedCensusData = this.getSortedCensusData(daoMap, field);
+        CensusDAO[] censusCSV = new Gson().fromJson(sortedCensusData, CensusDAO[].class);
+        int counter=0;
+        String state="";
+        for (int i=0;i<censusCSV.length-1;i++) {
+            if (censusCSV[i].population==censusCSV[i+1].population) {
+                counter=i;
+                break;
+            }
+        }
+        if (censusCSV[counter].totalArea==censusCSV[counter+1].totalArea) {
+            if (censusCSV[counter].populationDensity>censusCSV[counter+1].populationDensity)
+                state = censusCSV[counter].state;
+            else
+                state = censusCSV[counter+1].state;
+        }
+        else if (censusCSV[counter].totalArea>censusCSV[counter+1].totalArea)
+            state = censusCSV[counter].state;
+        else
+            state = censusCSV[counter+1].state;
+        return state;
     }
 }
