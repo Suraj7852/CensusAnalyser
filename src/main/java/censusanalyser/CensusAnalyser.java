@@ -15,9 +15,8 @@ public class CensusAnalyser {
         this.stateField.put(CSVField.STATE,Comparator.comparing(census -> census.state));
     }
 
-    public int loadCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
-        censusStateMap = new IndiaCensusAdapter().loadCensusData(country,csvFilePath);
-        return censusStateMap.size();
+    public Map<String, CensusDAO> loadCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
+        return new CensusAnalyserFactory().loadCensusData(country, csvFilePath);
     }
 
     public String getStateWiseSortedCensusData(CSVField field) throws CensusAnalyserException {

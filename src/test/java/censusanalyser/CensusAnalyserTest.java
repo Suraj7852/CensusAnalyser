@@ -5,6 +5,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Map;
+
 public class CensusAnalyserTest {
 
     private static final String INDIA_CENSUS_CSV_FILE_PATH = "./src/test/resources/IndiaStateCensusData.csv";
@@ -16,8 +18,8 @@ public class CensusAnalyserTest {
     public void givenIndianCensusCSVFileReturnsCorrectRecords() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
-            int numOfRecords = censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH);
-            Assert.assertEquals(29,numOfRecords);
+            Map<String, CensusDAO> numOfRecords = censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH);
+            Assert.assertEquals(29,numOfRecords.size());
         } catch (CensusAnalyserException e) { }
     }
 
@@ -37,8 +39,8 @@ public class CensusAnalyserTest {
     public void givenIndianStateCSV_ShouldReturnExactCount() {
         try {
             CensusAnalyser censusAnalyser = new CensusAnalyser();
-            int indiaCensusDataCount = censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH, INDIA_STATE_CSV_FILE_PATH);
-            Assert.assertEquals(29,indiaCensusDataCount);
+            Map<String, CensusDAO> indiaCensusDataCount = censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,INDIA_CENSUS_CSV_FILE_PATH, INDIA_STATE_CSV_FILE_PATH);
+            Assert.assertEquals(29,indiaCensusDataCount.size());
         } catch (CensusAnalyserException e) {
             e.printStackTrace();
         }
@@ -126,8 +128,8 @@ public class CensusAnalyserTest {
     public void givenUSCensusCSV_ShouldReturnExactCount() {
         CensusAnalyser censusAnalyser = new CensusAnalyser();
         try {
-            int usCensusData = censusAnalyser.loadCensusData(CensusAnalyser.Country.US,US_CENSUS_CSV_FILE_PATH);
-            Assert.assertEquals(51,usCensusData);
+            Map<String, CensusDAO> usCensusData = censusAnalyser.loadCensusData(CensusAnalyser.Country.US,US_CENSUS_CSV_FILE_PATH);
+            Assert.assertEquals(51,usCensusData.size());
         } catch (CensusAnalyserException e) {
             e.printStackTrace();
         }
