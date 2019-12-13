@@ -14,6 +14,7 @@ public class CensusAnalyser {
         this.stateField.put(CSVField.STATE,Comparator.comparing(census -> census.state));
         this.stateField.put(CSVField.POPULATION,Comparator.comparing(census -> census.population,Comparator.reverseOrder()));
         this.stateField.put(CSVField.DENSITY,Comparator.comparing(census -> census.populationDensity,Comparator.reverseOrder()));
+        this.stateField.put(CSVField.AREA,Comparator.comparing(census -> census.totalArea,Comparator.reverseOrder()));
     }
 
     public Map<String, CensusDAO> loadCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
