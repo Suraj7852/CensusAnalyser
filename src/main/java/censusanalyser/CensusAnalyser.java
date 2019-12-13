@@ -16,7 +16,8 @@ public class CensusAnalyser {
     }
 
     public Map<String, CensusDAO> loadCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
-        return new CensusAnalyserFactory().loadCensusData(country, csvFilePath);
+        CensusAdapter censusAdapter = CensusAnalyserFactory.loadCensusData(country);
+        return censusAdapter.loadCensusData(country,csvFilePath);
     }
 
     public String getStateWiseSortedCensusData(CSVField field) throws CensusAnalyserException {
