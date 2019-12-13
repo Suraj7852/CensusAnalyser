@@ -40,4 +40,24 @@ public class IndiaCensusAdapterTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.HEADER_MISMATCH,e.type);
         }
     }
+
+    @Test
+    public void givenIndianCensusCSVFile_WhenEmptyFilePathSent_ThrowsException() {
+        try {
+            IndiaCensusAdapter censusAnalyser = new IndiaCensusAdapter();
+            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,  INDIA_CENSUS_CSV_FILE_PATH,"");
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.UNABLE_TO_CAPTURE_CSV_HEADER,e.type);
+        }
+    }
+
+    @Test
+    public void givenIndianCensusCSVFile_WhenStat_ThrowsException() {
+        try {
+            IndiaCensusAdapter censusAnalyser = new IndiaCensusAdapter();
+            censusAnalyser.loadCensusData(CensusAnalyser.Country.INDIA,  INDIA_CENSUS_CSV_FILE_PATH,WRONG_CSV_FILE_PATH);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM,e.type);
+        }
+    }
 }
