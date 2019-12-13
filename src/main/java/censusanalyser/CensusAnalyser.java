@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 
 public class CensusAnalyser {
     public enum Country {INDIA,US}
-    Map<String, CensusDAO> censusStateMap = null;
     Map<CSVField,Comparator<CensusDAO>> stateField = null;
 
     public CensusAnalyser() {
         this.stateField = new HashMap<>();
         this.stateField.put(CSVField.STATE,Comparator.comparing(census -> census.state));
+        this.stateField.put(CSVField.POPULATION,Comparator.comparing(census -> census.population,Comparator.reverseOrder()));
     }
 
     public Map<String, CensusDAO> loadCensusData(Country country, String... csvFilePath) throws CensusAnalyserException {
