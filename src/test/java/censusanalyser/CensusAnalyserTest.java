@@ -228,4 +228,15 @@ public class CensusAnalyserTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.INVALID_COUNTRY,e.type);
         }
     }
+
+    @Test
+    public void givenIndianCensusData_ifCannotLoad_ThrowsException() {
+        try {
+            Map<String,CensusDAO> map=null;
+            String sortedCensusData = censusAnalyser.getSortedCensusData(map,CSVField.DENSITY);
+            CensusDAO[] censusCSV = new Gson().fromJson(sortedCensusData, CensusDAO[].class);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.NO_CENSUS_DATA,e.type);
+        }
+    }
 }
