@@ -13,6 +13,9 @@ public class CensusAnalyserTest {
     private static final String WRONG_CSV_FILE_PATH = "./src/main/resources/IndiaStateCensusData.csv";
     private static final String INDIA_STATE_CSV_FILE_PATH = "./src/test/resources/IndiaStateCode.csv";
     private static final String US_CENSUS_CSV_FILE_PATH = "./src/test/resources/USCensusData.csv";
+    private static final String US_CENSUS_CSV_FILE_PATH_SORT = "./src/test/resources/USCensusDataForChecking.csv";
+    private static final String US_CENSUS_CSV_FILE_PATH_SORT_DENSITY = "./src/test/resources/USCensusDataForGreaterDensity.csv";
+    private static final String US_CENSUS_CSV_FILE_PATH_SORT_AREA = "./src/test/resources/USCensusDataGreaterArea.csv";
 
     CensusAnalyser censusAnalyser = new CensusAnalyser();
     @Test
@@ -188,7 +191,7 @@ public class CensusAnalyserTest {
             Map<String, CensusDAO> usCensusData = censusAnalyser.loadCensusData(CensusAnalyser.Country.US,US_CENSUS_CSV_FILE_PATH);
             String sortedCensusData = censusAnalyser.getSortedCensusData(usCensusData,CSVField.POPULATION);
             CensusDAO[] censusDAOS = new Gson().fromJson(sortedCensusData, CensusDAO[].class);
-            Assert.assertEquals("California",censusDAOS[0].state);
+            Assert.assertEquals("Indiana",censusDAOS[0].state);
         } catch (CensusAnalyserException e) {
             e.printStackTrace();
         }
@@ -246,6 +249,39 @@ public class CensusAnalyserTest {
             Map<String, CensusDAO> usCensusData = censusAnalyser.loadCensusData(CensusAnalyser.Country.US,US_CENSUS_CSV_FILE_PATH);
             String state = censusAnalyser.mostPopulousState(usCensusData, CSVField.POPULATION);
             Assert.assertEquals("California",state);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenIndianCensusData_mostPopulousStateWithDensity_ForSameArea() {
+        try {
+            Map<String, CensusDAO> usCensusData = censusAnalyser.loadCensusData(CensusAnalyser.Country.US,US_CENSUS_CSV_FILE_PATH_SORT);
+            String state = censusAnalyser.mostPopulousState(usCensusData, CSVField.POPULATION);
+            Assert.assertEquals("Indiana",state);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenIndianCensusData_mostPopulousStateWithDensity_ForSameArea_ButGreaterDensity() {
+        try {
+            Map<String, CensusDAO> usCensusData = censusAnalyser.loadCensusData(CensusAnalyser.Country.US,US_CENSUS_CSV_FILE_PATH_SORT_DENSITY);
+            String state = censusAnalyser.mostPopulousState(usCensusData, CSVField.POPULATION);
+            Assert.assertEquals("California",state);
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenIndianCensusData_mostPopulousStateWithDensity_ForSameArea_ButGreaterArea() {
+        try {
+            Map<String, CensusDAO> usCensusData = censusAnalyser.loadCensusData(CensusAnalyser.Country.US,US_CENSUS_CSV_FILE_PATH_SORT_AREA);
+            String state = censusAnalyser.mostPopulousState(usCensusData, CSVField.POPULATION);
+            Assert.assertEquals("Indiana",state);
         } catch (CensusAnalyserException e) {
             e.printStackTrace();
         }
